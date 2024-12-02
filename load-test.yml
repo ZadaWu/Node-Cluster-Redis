@@ -1,0 +1,14 @@
+config:
+  target: "http://localhost:3000"
+  phases:
+    - duration: 30  # 持续30秒
+      arrivalRate: 5  # 每秒新增5个用户
+      rampTo: 50    # 30秒内逐渐增加到每秒50个用户
+  
+scenarios:
+  - name: "计算斐波那契数"
+    flow:
+      - get:
+          url: "/?number=30"
+          expect:
+            - statusCode: 200 

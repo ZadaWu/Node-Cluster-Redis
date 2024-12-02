@@ -1,0 +1,37 @@
+config:
+  target: "http://localhost:3000"
+  phases:
+    - duration: 60
+      arrivalRate: 5
+      name: "预热阶段"
+    - duration: 120
+      arrivalRate: 10
+      rampTo: 50
+      name: "压力增长阶段"
+    - duration: 60
+      arrivalRate: 50
+      name: "持续高压阶段"
+  
+  # 可以定义变量
+  variables:
+    numbers: [10, 20, 30, 40]
+
+scenarios:
+  - name: "斐波那契计算测试"
+    flow:
+      # 使用随机数
+      - get:
+          url: "/?number={{ $randomNumber(1,40) }}"
+      
+      # 使用预定义变量
+      - get:
+          url: "/?number={{ numbers[0] }}"
+      
+      # 添加思考时间
+      - think: 1
+      
+      - get:
+          url: "/?number={{ numbers[1] }}"
+          expect:
+            - statusCode: 200
+            - contentType: "text/html" 
